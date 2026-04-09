@@ -3,7 +3,10 @@
  * 実行: pnpm verify:helius  (ルートから)
  *   または: pnpm --filter @x402/helius verify
  */
-import "dotenv/config";
+import { config } from "dotenv";
+import { resolve } from "node:path";
+// packages/helius/src/ から3段上がるとリポジトリルート
+config({ path: resolve(import.meta.dirname, "../../../.env") });
 import { HeliusClient } from "./client.js";
 import type { Network } from "@x402/shared";
 
