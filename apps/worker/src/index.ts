@@ -7,7 +7,15 @@ import { paymentsRoute } from "./routes/payments.js";
 
 const app = new Hono<{ Bindings: Env }>();
 
-app.use("*", cors());
+app.use("*", async (c, next) => {
+  const allowed = c.env.ALLOWED_ORIGIN || "*";
+  const handler = cors({
+    origin: allowed === "*" ? "*" : allowed.split(",").map((s) => s.trim()),
+    allowMethods: ["GET", "POST", "OPTIONS"],
+    allowHeaders: ["Content-Type", "Authorization"],
+  });
+  return handler(c, next);
+});
 
 app.get("/", (c) => c.json({ name: "x402-explorer-worker", status: "ok" }));
 

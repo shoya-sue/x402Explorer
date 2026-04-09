@@ -9,7 +9,10 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "test": "echo 'no tests configured'",
-    "clean": "rm -rf .next .turbo *.tsbuildinfo"
+    "pages:build": "npx @cloudflare/next-on-pages",
+    "preview": "wrangler pages dev .vercel/output/static",
+    "deploy": "wrangler pages deploy .vercel/output/static --project-name=x402-explorer-web",
+    "clean": "rm -rf .next .vercel .turbo *.tsbuildinfo"
   },
   "dependencies": {
     "@x402/shared": "workspace:*",
@@ -19,6 +22,7 @@
     "recharts": "^2.13.0"
   },
   "devDependencies": {
+    "@cloudflare/next-on-pages": "^1.12.0",
     "@types/node": "^20.14.0",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
@@ -27,6 +31,8 @@
     "eslint-config-next": "14.2.13",
     "postcss": "^8.4.47",
     "tailwindcss": "^3.4.12",
-    "typescript": "^5.5.4"
+    "typescript": "^5.5.4",
+    "vercel": "^50.42.0",
+    "wrangler": "^3.78.0"
   }
 }

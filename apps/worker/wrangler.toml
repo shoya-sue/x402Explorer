@@ -2,15 +2,23 @@ name = "x402-explorer-worker"
 main = "src/index.ts"
 compatibility_date = "2024-09-23"
 compatibility_flags = ["nodejs_compat"]
+# account_id = "<KOJIN_ACCOUNT_ID>"  # ← wrangler whoami で取得後に追記
 
 [[d1_databases]]
 binding = "DB"
-database_name = "x402_explorer"
-database_id = "local-dev-placeholder"
+database_name = "x402_explorer_prod"
+database_id = "local-dev-placeholder"  # ← wrangler d1 create 後に実際の ID に差し替え
 migrations_dir = "migrations"
 
 [vars]
 HELIUS_NETWORK = "devnet"
+ALLOWED_ORIGIN = "https://<TBD>"  # ← ドメイン確定後に差し替え
 
-# HELIUS_API_KEY はローカルでは .dev.vars から読む
-# 本番デプロイ時は: wrangler secret put HELIUS_API_KEY
+# Secrets（wrangler secret put で個別投入、ここには書かない）:
+#   HELIUS_API_KEY
+#   HELIUS_WEBHOOK_SECRET
+
+# カスタムドメイン（ドメイン確定後にコメントアウトを解除）:
+# [[routes]]
+# pattern = "api.<TBD>"
+# custom_domain = true

@@ -10,8 +10,10 @@
     "lint": "echo 'no lint configured'",
     "clean": "rm -rf dist .wrangler .turbo *.tsbuildinfo",
     "test": "vitest run",
+    "deploy": "wrangler deploy",
     "db:migrate:local": "wrangler d1 migrations apply x402_explorer --local",
-    "db:migrate:list": "wrangler d1 migrations list x402_explorer --local"
+    "db:migrate:list": "wrangler d1 migrations list x402_explorer --local",
+    "db:migrate:production": "wrangler d1 migrations apply x402_explorer_prod --remote"
   },
   "dependencies": {
     "@x402/shared": "workspace:*",

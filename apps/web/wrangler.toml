@@ -1,0 +1,7 @@
+name = "x402-explorer-web"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = ".vercel/output/static"
+
+# NEXT_PUBLIC_WORKER_URL はビルド時に process.env から読まれるため
+# GitHub Actions の env: または Pages ダッシュボードで設定する

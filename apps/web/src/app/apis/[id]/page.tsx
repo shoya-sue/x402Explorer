@@ -1,3 +1,5 @@
+export const runtime = "edge";
+
 import Link from "next/link";
 import { getApi, getApiStat, getPayments } from "../../../lib/api.js";
 import StatusBadge from "../../../components/StatusBadge.js";

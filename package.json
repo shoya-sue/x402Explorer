@@ -17,7 +17,11 @@
     "db:migrate:local": "pnpm --filter worker db:migrate:local",
     "db:migrate:list": "pnpm --filter worker db:migrate:list",
     "test": "turbo run test",
-    "devnet-cycle": "tsx scripts/devnet-cycle.ts"
+    "devnet-cycle": "tsx scripts/devnet-cycle.ts",
+    "deploy:worker": "pnpm --filter worker deploy",
+    "deploy:web": "pnpm --filter web pages:build && pnpm --filter web deploy",
+    "deploy": "pnpm run deploy:worker && pnpm run deploy:web",
+    "db:migrate:production": "pnpm --filter worker db:migrate:production"
   },
   "devDependencies": {
     "@types/node": "^20.14.0",

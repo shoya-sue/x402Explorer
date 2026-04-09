@@ -3,6 +3,7 @@ import { z } from "zod";
 import type { Env } from "../types.js";
 import type { PaymentRow } from "../lib/db.js";
 import { rowToPayment } from "../lib/db.js";
+import { checkWebhookAuth } from "../lib/webhook-auth.js";
 
 // Helius Enhanced Transaction の最小サブセット（webhook 用）
 const HeliusTransferSchema = z.object({
@@ -28,6 +29,14 @@ const GetPaymentsQuerySchema = z.object({
 export const paymentsRoute = new Hono<{ Bindings: Env }>();
 
 paymentsRoute.post("/webhook", async (c) => {
+  const secret = c.env.HELIUS_WEBHOOK_SECRET;
+  if (!secret) {
+    return c.json({ success: false, error: "webhook secret not configured" }, 503);
+  }
+  if (!checkWebhookAuth(c.req.header("authorization") ?? null, secret)) {
+    return c.json({ success: false, error: "unauthorized" }, 401);
+  }
+
   let body: unknown;
   try {
     body = await c.req.json();
