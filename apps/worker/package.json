@@ -1,0 +1,25 @@
+{
+  "name": "worker",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "build": "wrangler deploy --dry-run --outdir=dist",
+    "typecheck": "tsc --noEmit",
+    "lint": "echo 'no lint configured'",
+    "clean": "rm -rf dist .wrangler .turbo *.tsbuildinfo",
+    "db:migrate:local": "wrangler d1 migrations apply x402_explorer --local",
+    "db:migrate:list": "wrangler d1 migrations list x402_explorer --local"
+  },
+  "dependencies": {
+    "@x402/shared": "workspace:*",
+    "@x402/helius": "workspace:*",
+    "hono": "^4.6.3"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240925.0",
+    "typescript": "^5.5.4",
+    "wrangler": "^3.78.0"
+  }
+}
