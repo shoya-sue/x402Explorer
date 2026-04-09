@@ -2,7 +2,7 @@
 
 Discover, register, and visualize APIs that implement the [x402 payment protocol](https://x402.org) on Solana.
 
-> **Colosseum Hackathon submission** — Week 1-2 foundation (monorepo + local dev env + Helius connection)
+> **Colosseum Hackathon submission** — Week 5-6: Stats API + EcoMap real data + NetworkToggle
 
 ---
 
@@ -125,12 +125,35 @@ HELIUS_API_KEY=your_key_here
 
 ---
 
-## Week 3-4 Roadmap
+## Week 5-6 Demo
 
-- API registration form
-- HTTP 402 auto-verification against D1 `apis` table
-- `/apis` and `/payments` endpoints on the Worker
-- WebSocket subscriber for Helius devnet events
+```bash
+# 1. Apply local D1 migration & start worker
+pnpm db:migrate:local
+pnpm dev:worker &
+
+# 2. Seed 5 devnet APIs and start payment loop
+pnpm --filter scripts exec tsx scripts/devnet-cycle.ts &
+sleep 10
+
+# 3. Test stats endpoints
+curl -s http://localhost:8787/apis/stats | jq
+curl -s http://localhost:8787/apis/stats?network=devnet | jq
+curl -s http://localhost:8787/apis/11111111-0000-0000-0000-000000000001/stats | jq
+
+# 4. Test mainnet-beta registration path
+curl -s -X POST http://localhost:8787/apis \
+  -H "Content-Type: application/json" \
+  -d '{"url":"https://example.com","name":"test","network":"mainnet-beta"}' | jq
+
+# 5. Start web
+pnpm dev:web
+# Visit http://localhost:3000        — NetworkToggle, filtered API grid
+# Visit http://localhost:3000/map    — EcoMap with real volume data
+# Visit http://localhost:3000/apis/<id> — Stats card (total volume, payment count)
+
+kill %1 %2
+```
 
 ## Tech Stack
 

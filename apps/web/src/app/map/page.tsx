@@ -1,18 +1,31 @@
+import { Suspense } from "react";
 import Link from "next/link";
-import type { ApiListing } from "@x402/shared";
+import type { ApiListing, ApiStats } from "@x402/shared";
 import EcoMap from "../../components/EcoMap.js";
-import { getApis } from "../../lib/api.js";
+import NetworkToggle from "../../components/NetworkToggle.js";
+import { getApis, getApiStats } from "../../lib/api.js";
 
 export const dynamic = "force-dynamic";
 
-export default async function MapPage() {
+interface PageProps {
+  searchParams?: { network?: string };
+}
+
+export default async function MapPage({ searchParams }: PageProps) {
+  const network = searchParams?.network ?? "devnet";
+
   let apis: ApiListing[] = [];
   let total = 0;
+  let statsMap: Record<string, ApiStats> = {};
 
   try {
-    const res = await getApis({ status: "approved", limit: 100 });
-    apis = res.data;
-    total = res.meta.total;
+    const [apisRes, statsData] = await Promise.all([
+      getApis({ status: "approved", network, limit: 100 }),
+      getApiStats({ network }),
+    ]);
+    apis = apisRes.data;
+    total = apisRes.meta.total;
+    statsMap = Object.fromEntries(statsData.map((s) => [s.apiId, s]));
   } catch {
     // worker not running during build — show empty state
   }
@@ -33,10 +46,13 @@ export default async function MapPage() {
               {total} approved API{total !== 1 ? "s" : ""} · Payment volume visualization
             </p>
           </div>
+          <Suspense fallback={null}>
+            <NetworkToggle defaultNetwork={network as "devnet" | "mainnet-beta"} />
+          </Suspense>
         </div>
       </header>
 
-      <EcoMap apis={apis} />
+      <EcoMap apis={apis} stats={statsMap} />
     </div>
   );
 }

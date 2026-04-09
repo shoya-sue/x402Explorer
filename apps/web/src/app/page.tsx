@@ -1,16 +1,24 @@
+import { Suspense } from "react";
 import Link from "next/link";
 import type { ApiListing } from "@x402/shared";
 import ApiCard from "../components/ApiCard.js";
+import NetworkToggle from "../components/NetworkToggle.js";
 import { getApis } from "../lib/api.js";
 
 export const dynamic = "force-dynamic";
 
-export default async function Home() {
+interface PageProps {
+  searchParams?: { network?: string };
+}
+
+export default async function Home({ searchParams }: PageProps) {
+  const network = searchParams?.network ?? "devnet";
+
   let apis: ApiListing[] = [];
   let total = 0;
 
   try {
-    const res = await getApis({ limit: 50 });
+    const res = await getApis({ network, limit: 50 });
     apis = res.data;
     total = res.meta.total;
   } catch {
@@ -23,15 +31,20 @@ export default async function Home() {
         <div>
           <h1 className="text-3xl font-bold tracking-tight">x402 Explorer</h1>
           <p className="mt-1 text-sm text-neutral-400">
-            {total} registered API{total !== 1 ? "s" : ""} · Solana payment protocol
+            {total} API{total !== 1 ? "s" : ""} · Discover x402-enabled APIs for AI agents
           </p>
         </div>
-        <Link
-          href="/submit"
-          className="shrink-0 rounded-lg bg-neutral-100 px-4 py-2 text-sm font-semibold text-neutral-900 hover:bg-white"
-        >
-          Register API
-        </Link>
+        <div className="flex shrink-0 items-center gap-3">
+          <Suspense fallback={null}>
+            <NetworkToggle defaultNetwork={network as "devnet" | "mainnet-beta"} />
+          </Suspense>
+          <Link
+            href="/submit"
+            className="rounded-lg bg-neutral-100 px-4 py-2 text-sm font-semibold text-neutral-900 hover:bg-white"
+          >
+            Register API
+          </Link>
+        </div>
       </header>
 
       {apis.length === 0 ? (

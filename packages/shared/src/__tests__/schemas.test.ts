@@ -5,6 +5,7 @@ import {
   ApiListingSchema,
   CreateApiListingInputSchema,
 } from "../api-listing.js";
+import { ApiStatsSchema } from "../api-stats.js";
 import { PaymentSchema } from "../payment.js";
 
 // ---------------------------------------------------------------------------
@@ -72,6 +73,74 @@ describe("CreateApiListingInputSchema", () => {
 
   it("rejects when url is missing", () => {
     expect(() => CreateApiListingInputSchema.parse({})).toThrow();
+  });
+});
+
+// ---------------------------------------------------------------------------
+// CreateApiListingInputSchema — network default
+// ---------------------------------------------------------------------------
+describe("CreateApiListingInputSchema — network default", () => {
+  it('defaults network to "devnet" when not provided', () => {
+    const result = CreateApiListingInputSchema.parse({ url: "https://api.example.com" });
+    expect(result.network).toBe("devnet");
+  });
+
+  it('accepts explicit "mainnet-beta" network', () => {
+    const result = CreateApiListingInputSchema.parse({
+      url: "https://api.example.com",
+      network: "mainnet-beta",
+    });
+    expect(result.network).toBe("mainnet-beta");
+  });
+
+  it("rejects invalid network value", () => {
+    expect(() =>
+      CreateApiListingInputSchema.parse({ url: "https://api.example.com", network: "testnet" })
+    ).toThrow();
+  });
+});
+
+// ---------------------------------------------------------------------------
+// ApiStatsSchema
+// ---------------------------------------------------------------------------
+describe("ApiStatsSchema", () => {
+  const validStats = {
+    apiId: "123e4567-e89b-12d3-a456-426614174000",
+    totalVolume: "10.500000",
+    paymentCount: 5,
+    lastPaymentAt: "2024-01-01T00:00:00.000Z",
+    token: "USDC",
+  } as const;
+
+  it("parses a complete valid stats object", () => {
+    const result = ApiStatsSchema.parse(validStats);
+    expect(result.apiId).toBe(validStats.apiId);
+    expect(result.totalVolume).toBe("10.500000");
+    expect(result.paymentCount).toBe(5);
+    expect(result.token).toBe("USDC");
+  });
+
+  it("accepts null for lastPaymentAt and token", () => {
+    const result = ApiStatsSchema.parse({
+      ...validStats,
+      lastPaymentAt: null,
+      token: null,
+    });
+    expect(result.lastPaymentAt).toBeNull();
+    expect(result.token).toBeNull();
+  });
+
+  it('accepts "0" for totalVolume (empty aggregation)', () => {
+    const result = ApiStatsSchema.parse({ ...validStats, totalVolume: "0" });
+    expect(result.totalVolume).toBe("0");
+  });
+
+  it("rejects negative paymentCount", () => {
+    expect(() => ApiStatsSchema.parse({ ...validStats, paymentCount: -1 })).toThrow();
+  });
+
+  it("rejects non-UUID apiId", () => {
+    expect(() => ApiStatsSchema.parse({ ...validStats, apiId: "not-a-uuid" })).toThrow();
   });
 });
 

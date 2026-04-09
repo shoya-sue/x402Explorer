@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getApi, getPayments } from "../../../lib/api.js";
+import { getApi, getApiStat, getPayments } from "../../../lib/api.js";
 import StatusBadge from "../../../components/StatusBadge.js";
 import PaymentTable from "../../../components/PaymentTable.js";
 
@@ -11,9 +11,10 @@ interface PageProps {
 
 export default async function ApiDetailPage({ params }: PageProps) {
   try {
-    const [apiRes, paymentsRes] = await Promise.all([
+    const [apiRes, paymentsRes, stats] = await Promise.all([
       getApi(params.id),
       getPayments({ apiId: params.id, limit: 50 }),
+      getApiStat(params.id),
     ]);
     const api = apiRes.data;
     const payments = paymentsRes.data;
@@ -54,6 +55,29 @@ export default async function ApiDetailPage({ params }: PageProps) {
               <dt className="text-xs text-neutral-500">Wallet</dt>
               <dd className="mt-0.5 font-mono text-xs text-neutral-300">
                 {api.wallet.slice(0, 8)}…{api.wallet.slice(-6)}
+              </dd>
+            </div>
+          </dl>
+        )}
+
+        {stats && (
+          <dl className="mt-4 grid grid-cols-3 gap-4 rounded-xl border border-neutral-800 bg-neutral-900/60 p-5">
+            <div>
+              <dt className="text-xs text-neutral-500">Total Volume</dt>
+              <dd className="mt-0.5 font-medium">
+                {stats.totalVolume} {stats.token ?? api.priceToken}
+              </dd>
+            </div>
+            <div>
+              <dt className="text-xs text-neutral-500">Payments</dt>
+              <dd className="mt-0.5 font-medium">{stats.paymentCount}</dd>
+            </div>
+            <div>
+              <dt className="text-xs text-neutral-500">Last Payment</dt>
+              <dd className="mt-0.5 text-sm text-neutral-300">
+                {stats.lastPaymentAt
+                  ? new Date(stats.lastPaymentAt).toLocaleDateString("ja-JP")
+                  : "—"}
               </dd>
             </div>
           </dl>

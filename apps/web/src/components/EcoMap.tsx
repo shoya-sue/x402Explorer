@@ -1,6 +1,6 @@
 "use client";
 
-import type { ApiListing } from "@x402/shared";
+import type { ApiListing, ApiStats } from "@x402/shared";
 import {
   ScatterChart,
   Scatter,
@@ -14,6 +14,7 @@ import {
 
 interface EcoMapProps {
   apis: ApiListing[];
+  stats: Record<string, ApiStats>;
 }
 
 interface ScatterPoint {
@@ -21,9 +22,10 @@ interface ScatterPoint {
   y: number;
   z: number;
   name: string;
-  priceAmount: string;
+  totalVolume: string;
+  paymentCount: number;
   priceToken: string;
-  network: string;
+  network: "devnet" | "mainnet-beta";
   category: string;
 }
 
@@ -34,20 +36,6 @@ interface TooltipPayloadItem {
 interface CustomTooltipProps {
   active?: boolean;
   payload?: TooltipPayloadItem[];
-}
-
-// TODO: Week 5-6 — replace with real payment volume from aggregated API
-function parsePriceToNumber(priceAmount: string): number {
-  const parsed = parseFloat(priceAmount);
-  return isNaN(parsed) ? 0 : parsed;
-}
-
-function deterministicJitter(id: string, seed: number): number {
-  let hash = seed;
-  for (let i = 0; i < id.length; i++) {
-    hash = ((hash << 5) - hash + id.charCodeAt(i)) | 0;
-  }
-  return Math.abs(hash % 100);
 }
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -74,7 +62,10 @@ function CustomTooltip({ active, payload }: CustomTooltipProps) {
     <div className="rounded-lg border border-neutral-700 bg-neutral-900 px-3 py-2 shadow-lg">
       <p className="font-semibold text-neutral-100">{point.name}</p>
       <p className="mt-1 text-xs text-neutral-400">
-        {point.priceAmount} {point.priceToken}
+        Volume: {point.totalVolume} {point.priceToken}
+      </p>
+      <p className="text-xs text-neutral-400">
+        Payments: {point.paymentCount}
       </p>
       {point.category && (
         <p className="text-xs text-neutral-500">{point.category}</p>
@@ -84,31 +75,29 @@ function CustomTooltip({ active, payload }: CustomTooltipProps) {
   );
 }
 
-export default function EcoMap({ apis }: EcoMapProps) {
-  const points: ScatterPoint[] = apis.map((api) => {
-    const price = parsePriceToNumber(api.priceAmount);
-    // TODO: Week 5-6 — replace x with real payment volume from aggregated API
-    const x = price;
-    const y = deterministicJitter(api.id, 7);
-    // bubble size proportional to price (clamped 200–2000)
-    const z = Math.max(200, Math.min(2000, price * 400 + 300));
-
-    return {
-      x,
-      y,
-      z,
+export default function EcoMap({ apis, stats }: EcoMapProps) {
+  const points: ScatterPoint[] = [];
+  for (const api of apis) {
+    const stat = stats[api.id];
+    if (!stat) continue;
+    const volume = Number(stat.totalVolume);
+    points.push({
+      x: volume,
+      y: stat.paymentCount,
+      z: Math.max(200, Math.min(2000, volume * 50 + 300)),
       name: api.name,
-      priceAmount: api.priceAmount,
+      totalVolume: stat.totalVolume,
+      paymentCount: stat.paymentCount,
       priceToken: api.priceToken,
       network: api.network,
       category: api.category ?? "Other",
-    };
-  });
+    });
+  }
 
   if (points.length === 0) {
     return (
       <div className="flex h-64 items-center justify-center rounded-xl border border-neutral-800 bg-neutral-900/50">
-        <p className="text-neutral-400">No approved APIs to display.</p>
+        <p className="text-neutral-400">No payment history yet for approved APIs.</p>
       </div>
     );
   }
@@ -116,19 +105,18 @@ export default function EcoMap({ apis }: EcoMapProps) {
   return (
     <div className="rounded-xl border border-neutral-800 bg-neutral-900/50 p-4">
       <p className="mb-4 text-xs text-neutral-500">
-        Bubble size represents price amount.{" "}
-        {/* TODO: Week 5-6 — replace with real payment volume from aggregated API */}
-        X-axis will show total payment volume once aggregation API is available.
+        Bubble size and X-axis represent total payment volume (USDC).
+        Y-axis shows payment count.
       </p>
       <ResponsiveContainer width="100%" height={400}>
         <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
           <XAxis
             type="number"
             dataKey="x"
-            name="Price"
+            name="Total Volume"
             tick={{ fill: "#737373", fontSize: 11 }}
             label={{
-              value: "Price Amount",
+              value: "Total Volume (USDC)",
               position: "insideBottom",
               offset: -10,
               fill: "#525252",
@@ -138,10 +126,10 @@ export default function EcoMap({ apis }: EcoMapProps) {
           <YAxis
             type="number"
             dataKey="y"
-            name="Spread"
+            name="Payment Count"
             tick={{ fill: "#737373", fontSize: 11 }}
             label={{
-              value: "Distribution",
+              value: "Payment Count",
               angle: -90,
               position: "insideLeft",
               fill: "#525252",

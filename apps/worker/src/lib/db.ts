@@ -1,4 +1,4 @@
-import type { ApiListing, Payment } from "@x402/shared";
+import type { ApiListing, ApiStats, Payment } from "@x402/shared";
 
 export interface ApiRow {
   id: string;
@@ -42,6 +42,24 @@ export function rowToApiListing(row: ApiRow): ApiListing {
     status: row.status,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
+  };
+}
+
+export interface ApiStatsRow {
+  apiId: string;
+  totalVolume: string;
+  paymentCount: number;
+  lastPaymentAt: string | null;
+  token: string | null;
+}
+
+export function rowToApiStats(row: ApiStatsRow): ApiStats {
+  return {
+    apiId: row.apiId,
+    totalVolume: row.totalVolume,
+    paymentCount: row.paymentCount,
+    lastPaymentAt: row.lastPaymentAt,
+    token: row.token,
   };
 }
 

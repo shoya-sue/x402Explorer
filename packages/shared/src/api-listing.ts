@@ -30,5 +30,6 @@ export const CreateApiListingInputSchema = ApiListingSchema.pick({
   url: true,
 }).extend({
   name: z.string().min(1).max(120).optional(),
+  network: NetworkSchema.default("devnet"),
 });
 export type CreateApiListingInput = z.infer<typeof CreateApiListingInputSchema>;
