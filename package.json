@@ -16,6 +16,7 @@
     "dev:worker": "pnpm --filter worker dev",
     "db:migrate:local": "pnpm --filter worker db:migrate:local",
     "db:migrate:list": "pnpm --filter worker db:migrate:list",
+    "test": "turbo run test",
     "devnet-cycle": "tsx scripts/devnet-cycle.ts"
   },
   "devDependencies": {

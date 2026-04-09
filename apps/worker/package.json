@@ -9,6 +9,7 @@
     "typecheck": "tsc --noEmit",
     "lint": "echo 'no lint configured'",
     "clean": "rm -rf dist .wrangler .turbo *.tsbuildinfo",
+    "test": "echo 'no tests configured'",
     "db:migrate:local": "wrangler d1 migrations apply x402_explorer --local",
     "db:migrate:list": "wrangler d1 migrations list x402_explorer --local"
   },
