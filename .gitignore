@@ -25,6 +25,9 @@ apps/worker/.wrangler/
 .vscode/*
 !.vscode/extensions.json
 
+# copilot
+.claude/
+
 # logs
 *.log
 npm-debug.log*

@@ -1,0 +1,286 @@
+<mxfile host="app.diagrams.net" modified="2026-04-10T07:00:00.000Z" agent="x402Explorer docs" version="24.0.0" type="device">
+  <diagram id="system-architecture" name="System Architecture">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- ============================================================ -->
+        <!-- 凡例 (Legend)                                                 -->
+        <!-- ============================================================ -->
+        <mxCell id="legend-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#CCCCCC;dashed=1;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="1200" y="40" width="360" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-title" value="&lt;b&gt;Legend&lt;/b&gt;" style="text;html=1;align=left;verticalAlign=middle;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="1220" y="48" width="100" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-cf" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF3E0;strokeColor=#F57C00;" vertex="1" parent="1">
+          <mxGeometry x="1220" y="80" width="20" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-cf-text" value="Cloudflare Services" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1250" y="80" width="140" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-sol" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3E5F5;strokeColor=#9945FF;" vertex="1" parent="1">
+          <mxGeometry x="1220" y="108" width="20" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-sol-text" value="Solana / x402 Protocol" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1250" y="108" width="160" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-cicd" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E3F2FD;strokeColor=#4A90D9;" vertex="1" parent="1">
+          <mxGeometry x="1220" y="136" width="20" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-cicd-text" value="CI/CD (GitHub Actions)" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1250" y="136" width="160" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-ext" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#9E9E9E;" vertex="1" parent="1">
+          <mxGeometry x="1220" y="164" width="20" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-ext-text" value="Client / External" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1250" y="164" width="140" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- ============================================================ -->
+        <!-- タイトル                                                      -->
+        <!-- ============================================================ -->
+        <mxCell id="title" value="&lt;b style=&quot;font-size:18px;&quot;&gt;x402 Explorer — System Architecture&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="350" y="20" width="500" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- ============================================================ -->
+        <!-- Client 層 (グレー)                                             -->
+        <!-- ============================================================ -->
+        <mxCell id="layer-client-label" value="&lt;b&gt;Client&lt;/b&gt;" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontColor=#757575;" vertex="1" parent="1">
+          <mxGeometry x="80" y="80" width="80" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="browser" value="&lt;b&gt;Browser&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px;&quot;&gt;User / AI Agent&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#9E9E9E;arcSize=12;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="460" y="80" width="200" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- ============================================================ -->
+        <!-- Frontend 層 (オレンジ — Cloudflare)                            -->
+        <!-- ============================================================ -->
+        <mxCell id="layer-frontend-label" value="&lt;b&gt;Frontend&lt;/b&gt;" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontColor=#F57C00;" vertex="1" parent="1">
+          <mxGeometry x="80" y="210" width="80" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="pages" value="&lt;b&gt;Cloudflare Pages&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px;&quot;&gt;Next.js 14 (Edge Runtime)&lt;br&gt;x402explorer.fracturelab.dev&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF3E0;strokeColor=#F57C00;arcSize=12;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="360" y="200" width="280" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- Pages 内部コンポーネント -->
+        <mxCell id="pages-detail" value="&lt;font style=&quot;font-size:10px;&quot;&gt;&lt;b&gt;Pages&lt;/b&gt;: / • /apis/[id] • /map • /submit&lt;br&gt;&lt;b&gt;Components&lt;/b&gt;: Navbar • ApiCard • EcoMap • SubmitForm • NetworkToggle&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF8E1;strokeColor=#FFB74D;dashed=1;arcSize=8;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="680" y="200" width="380" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- ============================================================ -->
+        <!-- API 層 (オレンジ — Cloudflare)                                 -->
+        <!-- ============================================================ -->
+        <mxCell id="layer-api-label" value="&lt;b&gt;API&lt;/b&gt;" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontColor=#F57C00;" vertex="1" parent="1">
+          <mxGeometry x="80" y="360" width="80" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="worker" value="&lt;b&gt;Cloudflare Workers&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px;&quot;&gt;Hono 4 + Zod&lt;br&gt;x402explorer-api.fracturelab.dev&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF3E0;strokeColor=#F57C00;arcSize=12;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="360" y="340" width="280" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- Worker 内部エンドポイント -->
+        <mxCell id="worker-detail" value="&lt;font style=&quot;font-size:10px;&quot;&gt;&lt;b&gt;REST API&lt;/b&gt;&lt;br&gt;POST /apis • GET /apis • GET /apis/:id&lt;br&gt;GET /apis/stats • GET /apis/:id/stats&lt;br&gt;POST /payments/webhook • GET /payments&lt;br&gt;GET /health&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF8E1;strokeColor=#FFB74D;dashed=1;arcSize=8;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="680" y="325" width="380" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- ============================================================ -->
+        <!-- Data 層 (オレンジ — Cloudflare)                                -->
+        <!-- ============================================================ -->
+        <mxCell id="layer-data-label" value="&lt;b&gt;Data&lt;/b&gt;" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontColor=#F57C00;" vertex="1" parent="1">
+          <mxGeometry x="80" y="510" width="80" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="d1" value="&lt;b&gt;Cloudflare D1&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px;&quot;&gt;SQLite (x402_explorer_prod)&lt;/font&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#FFF3E0;strokeColor=#F57C00;size=10;arcSize=12;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="420" y="490" width="200" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- D1 テーブル詳細 -->
+        <mxCell id="d1-detail" value="&lt;font style=&quot;font-size:10px;&quot;&gt;&lt;b&gt;apis&lt;/b&gt;: id, url, name, wallet, price_amount, price_token, network, status&lt;br&gt;&lt;b&gt;payments&lt;/b&gt;: signature, api_id, amount, token, network, block_time, slot&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF8E1;strokeColor=#FFB74D;dashed=1;arcSize=8;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="680" y="495" width="380" height="55" as="geometry" />
+        </mxCell>
+
+        <!-- ============================================================ -->
+        <!-- External 層 (紫 — Solana)                                     -->
+        <!-- ============================================================ -->
+        <mxCell id="layer-external-label" value="&lt;b&gt;External&lt;/b&gt;" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontColor=#9945FF;" vertex="1" parent="1">
+          <mxGeometry x="80" y="660" width="80" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="helius" value="&lt;b&gt;Helius API&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px;&quot;&gt;Enhanced Transaction API&lt;br&gt;JSON-RPC + Webhook&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3E5F5;strokeColor=#9945FF;arcSize=12;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="290" y="645" width="220" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="solana" value="&lt;b&gt;Solana Network&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px;&quot;&gt;devnet / mainnet-beta&lt;br&gt;400ms finality&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3E5F5;strokeColor=#9945FF;arcSize=12;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="570" y="645" width="220" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- x402 対象 API -->
+        <mxCell id="x402-api" value="&lt;b&gt;x402 API Endpoint&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px;&quot;&gt;HTTP 402 レスポンス返却&lt;br&gt;検証対象の外部 API&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3E5F5;strokeColor=#9945FF;arcSize=12;fontSize=12;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="850" y="645" width="210" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- ============================================================ -->
+        <!-- CI/CD (ブルー — GitHub)                                       -->
+        <!-- ============================================================ -->
+        <mxCell id="cicd-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E3F2FD;strokeColor=#4A90D9;dashed=1;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="40" y="170" width="230" height="380" as="geometry" />
+        </mxCell>
+        <mxCell id="cicd-title" value="&lt;b&gt;GitHub Actions&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;fontSize=13;fontColor=#1565C0;" vertex="1" parent="1">
+          <mxGeometry x="65" y="178" width="180" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="ci-job" value="&lt;b&gt;CI Pipeline&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:9px;&quot;&gt;install → build →&lt;br&gt;typecheck → lint → test&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#BBDEFB;strokeColor=#4A90D9;arcSize=12;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="65" y="210" width="180" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="deploy-worker-job" value="&lt;b&gt;Deploy Worker&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:9px;&quot;&gt;build shared → build helius&lt;br&gt;→ wrangler deploy&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#BBDEFB;strokeColor=#4A90D9;arcSize=12;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="65" y="290" width="180" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="deploy-web-job" value="&lt;b&gt;Deploy Web&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:9px;&quot;&gt;build shared → pages:build&lt;br&gt;→ wrangler pages deploy&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#BBDEFB;strokeColor=#4A90D9;arcSize=12;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="65" y="370" width="180" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="github-repo" value="&lt;b&gt;GitHub Repository&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:9px;&quot;&gt;main branch push&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#BBDEFB;strokeColor=#4A90D9;arcSize=12;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="65" y="460" width="180" height="45" as="geometry" />
+        </mxCell>
+
+        <!-- ============================================================ -->
+        <!-- Monorepo パッケージ依存 (右サイド)                              -->
+        <!-- ============================================================ -->
+        <mxCell id="pkg-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FAFAFA;strokeColor=#CCCCCC;dashed=1;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="1200" y="260" width="360" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="pkg-title" value="&lt;b&gt;Monorepo Package Dependencies&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;fontSize=12;fontColor=#616161;" vertex="1" parent="1">
+          <mxGeometry x="1220" y="268" width="320" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="pkg-shared" value="&lt;b&gt;@x402/shared&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:9px;&quot;&gt;Zod Schemas + Types&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#9E9E9E;arcSize=12;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1310" y="300" width="150" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="pkg-helius" value="&lt;b&gt;@x402/helius&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:9px;&quot;&gt;Helius API Client&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#9E9E9E;arcSize=12;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1310" y="355" width="150" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="pkg-web" value="&lt;b&gt;apps/web&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:9px;&quot;&gt;Next.js Frontend&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF3E0;strokeColor=#F57C00;arcSize=12;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1220" y="420" width="130" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="pkg-worker" value="&lt;b&gt;apps/worker&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:9px;&quot;&gt;Hono API Server&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF3E0;strokeColor=#F57C00;arcSize=12;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1400" y="420" width="130" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- パッケージ依存矢印 -->
+        <mxCell id="pkg-dep-1" style="endArrow=block;endFill=1;strokeColor=#9E9E9E;" edge="1" parent="1" source="pkg-helius" target="pkg-shared">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pkg-dep-2" style="endArrow=block;endFill=1;strokeColor=#9E9E9E;" edge="1" parent="1" source="pkg-web" target="pkg-shared">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pkg-dep-3" style="endArrow=block;endFill=1;strokeColor=#9E9E9E;" edge="1" parent="1" source="pkg-worker" target="pkg-shared">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pkg-dep-4" style="endArrow=block;endFill=1;strokeColor=#9E9E9E;" edge="1" parent="1" source="pkg-worker" target="pkg-helius">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ============================================================ -->
+        <!-- 接続線 — メインデータフロー                                     -->
+        <!-- ============================================================ -->
+
+        <!-- Browser → Pages -->
+        <mxCell id="conn-browser-pages" value="&lt;font style=&quot;font-size:9px;&quot;&gt;HTTPS&lt;/font&gt;" style="endArrow=block;endFill=1;strokeColor=#424242;strokeWidth=1.5;" edge="1" parent="1" source="browser" target="pages">
+          <mxGeometry x="0.1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Pages → Worker (SSR fetch) -->
+        <mxCell id="conn-pages-worker" value="&lt;font style=&quot;font-size:9px;&quot;&gt;fetch (SSR)&lt;br&gt;cache: no-store&lt;/font&gt;" style="endArrow=block;endFill=1;strokeColor=#424242;strokeWidth=1.5;" edge="1" parent="1" source="pages" target="worker">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Browser → Worker (SubmitForm POST) -->
+        <mxCell id="conn-browser-worker" value="&lt;font style=&quot;font-size:9px;&quot;&gt;POST /apis&lt;br&gt;(SubmitForm)&lt;/font&gt;" style="endArrow=block;endFill=1;strokeColor=#424242;strokeWidth=1.5;dashed=1;" edge="1" parent="1" source="browser" target="worker">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="720" y="110" />
+              <mxPoint x="720" y="375" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Worker → D1 -->
+        <mxCell id="conn-worker-d1" value="&lt;font style=&quot;font-size:9px;&quot;&gt;D1 Binding&lt;br&gt;SQL (Parameterized)&lt;/font&gt;" style="endArrow=block;endFill=1;strokeColor=#424242;strokeWidth=1.5;" edge="1" parent="1" source="worker" target="d1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Worker → Helius (verify / RPC) -->
+        <mxCell id="conn-worker-helius" value="&lt;font style=&quot;font-size:9px;&quot;&gt;Enhanced TX API&lt;br&gt;JSON-RPC&lt;/font&gt;" style="endArrow=block;endFill=1;strokeColor=#7B1FA2;strokeWidth=1.5;" edge="1" parent="1" source="worker" target="helius">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="400" y="450" />
+              <mxPoint x="400" y="620" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Helius → Worker (Webhook) -->
+        <mxCell id="conn-helius-worker" value="&lt;font style=&quot;font-size:9px;&quot;&gt;Webhook&lt;br&gt;POST /payments/webhook&lt;br&gt;Bearer Auth&lt;/font&gt;" style="endArrow=block;endFill=1;strokeColor=#7B1FA2;strokeWidth=1.5;dashed=1;" edge="1" parent="1" source="helius" target="worker">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="340" y="620" />
+              <mxPoint x="340" y="410" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Helius → Solana -->
+        <mxCell id="conn-helius-solana" value="&lt;font style=&quot;font-size:9px;&quot;&gt;RPC&lt;/font&gt;" style="endArrow=block;endFill=1;strokeColor=#7B1FA2;strokeWidth=1.5;" edge="1" parent="1" source="helius" target="solana">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Worker → x402 API (402 verify) -->
+        <mxCell id="conn-worker-x402" value="&lt;font style=&quot;font-size:9px;&quot;&gt;GET (402 verify)&lt;br&gt;HTTPS + timeout 10s&lt;/font&gt;" style="endArrow=block;endFill=1;strokeColor=#7B1FA2;strokeWidth=1.5;dashed=1;" edge="1" parent="1" source="worker" target="x402-api">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="640" y="450" />
+              <mxPoint x="955" y="450" />
+              <mxPoint x="955" y="620" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ============================================================ -->
+        <!-- CI/CD 接続線                                                  -->
+        <!-- ============================================================ -->
+
+        <!-- GitHub → CI -->
+        <mxCell id="conn-repo-ci" value="&lt;font style=&quot;font-size:9px;&quot;&gt;push / PR&lt;/font&gt;" style="endArrow=block;endFill=1;strokeColor=#4A90D9;strokeWidth=1;" edge="1" parent="1" source="github-repo" target="ci-job">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- CI → Deploy Worker -->
+        <mxCell id="conn-ci-dw" style="endArrow=block;endFill=1;strokeColor=#4A90D9;strokeWidth=1;" edge="1" parent="1" source="ci-job" target="deploy-worker-job">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Deploy Worker → Deploy Web -->
+        <mxCell id="conn-dw-dweb" value="&lt;font style=&quot;font-size:9px;&quot;&gt;needs&lt;/font&gt;" style="endArrow=block;endFill=1;strokeColor=#4A90D9;strokeWidth=1;" edge="1" parent="1" source="deploy-worker-job" target="deploy-web-job">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Deploy Worker → Worker -->
+        <mxCell id="conn-dw-worker" value="&lt;font style=&quot;font-size:9px;&quot;&gt;wrangler&lt;br&gt;deploy&lt;/font&gt;" style="endArrow=block;endFill=1;strokeColor=#4A90D9;strokeWidth=1;dashed=1;" edge="1" parent="1" source="deploy-worker-job" target="worker">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Deploy Web → Pages -->
+        <mxCell id="conn-dweb-pages" value="&lt;font style=&quot;font-size:9px;&quot;&gt;pages&lt;br&gt;deploy&lt;/font&gt;" style="endArrow=block;endFill=1;strokeColor=#4A90D9;strokeWidth=1;dashed=1;" edge="1" parent="1" source="deploy-web-job" target="pages">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ============================================================ -->
+        <!-- セキュリティ注釈                                               -->
+        <!-- ============================================================ -->
+        <mxCell id="sec-note" value="&lt;font style=&quot;font-size:9px;&quot;&gt;🔒 &lt;b&gt;Security&lt;/b&gt;: SSRF防御 • Webhook タイミングセーフ認証 • CORS • HTTPS強制 • パラメタライズドSQL&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFEBEE;strokeColor=#E57373;arcSize=8;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="680" y="440" width="380" height="30" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -2,7 +2,7 @@
 
 Discover, register, and visualize APIs that implement the [x402 payment protocol](https://x402.org) on Solana.
 
-> **Colosseum Hackathon submission** — Week 5-6: Stats API + EcoMap real data + NetworkToggle
+> **Colosseum Hackathon submission** — Discover, register & visualize x402 payment APIs on Solana
 
 ---
 
@@ -67,7 +67,15 @@ pnpm db:migrate:local
 # Worker health check
 pnpm dev:worker &
 curl -s http://localhost:8787/health | jq
-# Expected: { "ok": true, "d1": { "ok": true }, "heliusKeyConfigured": true, "network": "devnet" }
+# Expected:
+# {
+#   "ok": true,
+#   "service": "x402-explorer-worker",
+#   "timestamp": "2025-...",
+#   "d1": { "ok": true },
+#   "heliusKeyConfigured": true,
+#   "network": "devnet"
+# }
 kill %1
 
 # Web smoke test
@@ -103,8 +111,11 @@ x402Explorer/
 | `pnpm dev:web` | Start Next.js only |
 | `pnpm dev:worker` | Start Wrangler dev only |
 | `pnpm typecheck` | TypeScript check across all packages |
+| `pnpm test` | Run all tests (Vitest) |
 | `pnpm verify:helius` | Prove Helius devnet connection |
 | `pnpm db:migrate:local` | Apply D1 migrations locally |
+| `pnpm db:migrate:production` | Apply D1 migrations to production |
+| `pnpm devnet-cycle` | Run devnet demo payment cycle |
 
 ## Environment Variables
 
@@ -125,7 +136,7 @@ HELIUS_API_KEY=your_key_here
 
 ---
 
-## Week 5-6 Demo
+## Demo
 
 ```bash
 # 1. Apply local D1 migration & start worker
@@ -133,7 +144,7 @@ pnpm db:migrate:local
 pnpm dev:worker &
 
 # 2. Seed 5 devnet APIs and start payment loop
-pnpm --filter scripts exec tsx scripts/devnet-cycle.ts &
+pnpm devnet-cycle &
 sleep 10
 
 # 3. Test stats endpoints
@@ -148,8 +159,9 @@ curl -s -X POST http://localhost:8787/apis \
 
 # 5. Start web
 pnpm dev:web
-# Visit http://localhost:3000        — NetworkToggle, filtered API grid
-# Visit http://localhost:3000/map    — EcoMap with real volume data
+# Visit http://localhost:3000           — NetworkToggle, filtered API grid
+# Visit http://localhost:3000/map      — EcoMap with real volume data
+# Visit http://localhost:3000/submit   — Register a new API endpoint
 # Visit http://localhost:3000/apis/<id> — Stats card (total volume, payment count)
 
 kill %1 %2
