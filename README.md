@@ -236,7 +236,7 @@ pnpm db:migrate:production
 | Secret | Value |
 |--------|-------|
 | `CLOUDFLARE_API_TOKEN` | Cloudflare Dashboard で作成（権限: Workers Scripts:Edit, D1:Edit, Pages:Edit, Account:Read） |
-| `CLOUDFLARE_ACCOUNT_ID` | `174035f0b17da0144acfa9e8b371d46f` |
+| `CLOUDFLARE_ACCOUNT_ID` | Kojin アカウント ID（`wrangler whoami` で確認） |
 | `NEXT_PUBLIC_WORKER_URL` | `https://x402explorer-api.fracturelab.dev` |
 
 **API Token 作成手順:**
