@@ -12,13 +12,12 @@ migrations_dir = "migrations"
 
 [vars]
 HELIUS_NETWORK = "devnet"
-ALLOWED_ORIGIN = "https://<TBD>"  # ← ドメイン確定後に差し替え
+ALLOWED_ORIGIN = "https://x402explorer.fracturelab.dev"
 
 # Secrets（wrangler secret put で個別投入、ここには書かない）:
 #   HELIUS_API_KEY
 #   HELIUS_WEBHOOK_SECRET
 
-# カスタムドメイン（ドメイン確定後にコメントアウトを解除）:
-# [[routes]]
-# pattern = "api.<TBD>"
-# custom_domain = true
+[[routes]]
+pattern = "api.x402explorer.fracturelab.dev"
+custom_domain = true
