@@ -55,15 +55,17 @@ export default function SubmitForm() {
 
   if (state.status === "success" && state.id) {
     return (
-      <div className="rounded-xl border border-green-800 bg-green-950/40 p-6">
-        <p className="font-semibold text-green-400">Submitted successfully!</p>
-        <p className="mt-1 text-sm text-neutral-400">
-          Your API is being verified in the background. It will appear in the explorer once
-          approved.
+      <div className="rounded-xl border border-solana-green/30 bg-solana-green/10 p-6">
+        <div className="flex items-center gap-2">
+          <span className="h-2 w-2 rounded-full bg-solana-green animate-pulse" />
+          <p className="font-semibold text-solana-green">Submitted successfully!</p>
+        </div>
+        <p className="mt-2 text-sm text-solana-muted">
+          Your API is being verified in the background. It will appear in the explorer once approved.
         </p>
         <Link
           href={`/apis/${state.id}`}
-          className="mt-4 inline-block text-sm text-blue-400 underline hover:text-blue-300"
+          className="mt-4 inline-block text-sm text-solana-green hover:underline"
         >
           Check verification status →
         </Link>
@@ -83,9 +85,9 @@ export default function SubmitForm() {
           value={url}
           onChange={(e) => setUrl(e.target.value)}
           placeholder="https://api.example.com/resource"
-          className="w-full rounded-lg border border-neutral-700 bg-neutral-900 px-4 py-2.5 text-sm text-neutral-100 placeholder:text-neutral-600 focus:border-neutral-500 focus:outline-none"
+          className="input-field text-sm"
         />
-        <p className="mt-1 text-xs text-neutral-500">
+        <p className="mt-1 text-xs text-solana-muted">
           Must return HTTP 402 with a valid x402 challenge body.
         </p>
       </div>
@@ -93,7 +95,7 @@ export default function SubmitForm() {
       <div>
         <label className="mb-1.5 block text-sm font-medium text-neutral-300">
           Display name{" "}
-          <span className="text-neutral-500">(optional — defaults to hostname)</span>
+          <span className="text-solana-muted">(optional — defaults to hostname)</span>
         </label>
         <input
           type="text"
@@ -101,12 +103,12 @@ export default function SubmitForm() {
           onChange={(e) => setName(e.target.value)}
           placeholder="My AI API"
           maxLength={120}
-          className="w-full rounded-lg border border-neutral-700 bg-neutral-900 px-4 py-2.5 text-sm text-neutral-100 placeholder:text-neutral-600 focus:border-neutral-500 focus:outline-none"
+          className="input-field text-sm"
         />
       </div>
 
       {state.status === "error" && (
-        <p className="rounded-lg border border-red-800 bg-red-950/40 px-4 py-3 text-sm text-red-400">
+        <p className="rounded-lg border border-red-600/40 bg-red-500/10 px-4 py-3 text-sm text-red-400">
           {state.error}
         </p>
       )}
@@ -114,9 +116,16 @@ export default function SubmitForm() {
       <button
         type="submit"
         disabled={state.status === "loading"}
-        className="self-start rounded-lg bg-neutral-100 px-6 py-2.5 text-sm font-semibold text-neutral-900 hover:bg-white disabled:opacity-50"
+        className="self-start glow-btn disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {state.status === "loading" ? "Submitting…" : "Submit API"}
+        {state.status === "loading" ? (
+          <span className="flex items-center gap-2">
+            <span className="h-3.5 w-3.5 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+            Submitting…
+          </span>
+        ) : (
+          "Submit API"
+        )}
       </button>
     </form>
   );

@@ -4,6 +4,8 @@ import Link from "next/link";
 import { getApi, getApiStat, getPayments } from "../../../lib/api.js";
 import StatusBadge from "../../../components/StatusBadge.js";
 import PaymentTable from "../../../components/PaymentTable.js";
+import GlowCard from "../../../components/GlowCard.js";
+import GradientText from "../../../components/GradientText.js";
 
 export const dynamic = "force-dynamic";
 
@@ -23,12 +25,17 @@ export default async function ApiDetailPage({ params }: PageProps) {
 
     return (
       <div className="mx-auto max-w-3xl px-6 py-12">
-        <Link href="/" className="text-sm text-neutral-500 hover:text-neutral-300">
+        <div className="pointer-events-none absolute right-8 top-32 h-48 w-48 rounded-full bg-solana-purple/10 blur-3xl" />
+
+        <Link
+          href="/"
+          className="text-sm text-solana-muted hover:text-neutral-200 transition-colors duration-200"
+        >
           ← Back to explorer
         </Link>
 
         <div className="mt-6 flex items-start justify-between gap-4">
-          <h1 className="text-2xl font-bold">{api.name}</h1>
+          <h1 className="text-2xl font-bold text-neutral-100">{api.name}</h1>
           <StatusBadge status={api.status} />
         </div>
 
@@ -36,93 +43,98 @@ export default async function ApiDetailPage({ params }: PageProps) {
           href={api.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-1 block truncate text-sm text-blue-400 hover:underline"
+          className="mt-1 block truncate text-sm text-solana-teal hover:text-solana-green transition-colors duration-200 hover:underline"
         >
           {api.url}
         </a>
 
         {api.status === "approved" && (
-          <dl className="mt-6 grid grid-cols-2 gap-4 rounded-xl border border-neutral-800 bg-neutral-900 p-5 sm:grid-cols-3">
+          <GlowCard className="mt-6 grid grid-cols-3 gap-4" hover={false}>
             <div>
-              <dt className="text-xs text-neutral-500">Price</dt>
-              <dd className="mt-0.5 font-medium">
+              <p className="text-xs text-solana-muted">Price</p>
+              <p className="mt-1 font-semibold text-solana-green">
                 {api.priceAmount} {api.priceToken}
-              </dd>
+              </p>
             </div>
             <div>
-              <dt className="text-xs text-neutral-500">Network</dt>
-              <dd className="mt-0.5 font-medium">{api.network}</dd>
+              <p className="text-xs text-solana-muted">Network</p>
+              <p className="mt-1 font-medium capitalize">{api.network}</p>
             </div>
             <div>
-              <dt className="text-xs text-neutral-500">Wallet</dt>
-              <dd className="mt-0.5 font-mono text-xs text-neutral-300">
+              <p className="text-xs text-solana-muted">Wallet</p>
+              <p className="mt-1 font-mono text-xs text-neutral-300">
                 {api.wallet.slice(0, 8)}…{api.wallet.slice(-6)}
-              </dd>
+              </p>
             </div>
-          </dl>
+          </GlowCard>
         )}
 
         {stats && (
-          <dl className="mt-4 grid grid-cols-3 gap-4 rounded-xl border border-neutral-800 bg-neutral-900/60 p-5">
-            <div>
-              <dt className="text-xs text-neutral-500">Total Volume</dt>
-              <dd className="mt-0.5 font-medium">
-                {stats.totalVolume} {stats.token ?? api.priceToken}
-              </dd>
-            </div>
-            <div>
-              <dt className="text-xs text-neutral-500">Payments</dt>
-              <dd className="mt-0.5 font-medium">{stats.paymentCount}</dd>
-            </div>
-            <div>
-              <dt className="text-xs text-neutral-500">Last Payment</dt>
-              <dd className="mt-0.5 text-sm text-neutral-300">
+          <div className="mt-4 grid grid-cols-3 gap-4">
+            <GlowCard className="text-center py-4">
+              <GradientText as="p" className="text-2xl font-bold">
+                {stats.totalVolume}
+              </GradientText>
+              <p className="mt-1 text-xs text-solana-muted">{stats.token ?? api.priceToken} Volume</p>
+            </GlowCard>
+            <GlowCard className="text-center py-4">
+              <p className="text-2xl font-bold text-solana-purple">{stats.paymentCount}</p>
+              <p className="mt-1 text-xs text-solana-muted">Payments</p>
+            </GlowCard>
+            <GlowCard className="text-center py-4">
+              <p className="text-sm font-semibold text-neutral-200">
                 {stats.lastPaymentAt
                   ? new Date(stats.lastPaymentAt).toLocaleDateString("ja-JP")
                   : "—"}
-              </dd>
-            </div>
-          </dl>
+              </p>
+              <p className="mt-1 text-xs text-solana-muted">Last Payment</p>
+            </GlowCard>
+          </div>
         )}
 
         {api.status === "rejected" && (
-          <div className="mt-4 rounded-lg border border-red-800 bg-red-950/30 px-4 py-3 text-sm text-red-400">
+          <div className="mt-4 rounded-lg border border-red-600/40 bg-red-500/10 px-4 py-3 text-sm text-red-400">
             Verification failed. The URL did not return a valid HTTP 402 x402 challenge.
           </div>
         )}
 
         {(api.status === "pending" || api.status === "verifying") && (
-          <div className="mt-4 rounded-lg border border-yellow-800 bg-yellow-950/30 px-4 py-3 text-sm text-yellow-400">
-            Verification in progress. Refresh shortly.
+          <div className="mt-4 rounded-lg border border-solana-purple/40 bg-solana-purple/10 px-4 py-3 text-sm text-solana-purple">
+            <span className="inline-flex items-center gap-1.5">
+              <span className="h-1.5 w-1.5 rounded-full bg-solana-purple animate-pulse" />
+              Verification in progress. Refresh shortly.
+            </span>
           </div>
         )}
 
         <section className="mt-10">
-          <h2 className="mb-4 text-lg font-semibold">Payment History</h2>
+          <h2 className="mb-4 text-lg font-semibold">
+            <GradientText>Payment History</GradientText>
+          </h2>
           <PaymentTable payments={payments} />
         </section>
 
-        <dl className="mt-10 flex gap-8 text-xs text-neutral-500">
+        <div className="mt-10 flex gap-8 text-xs text-solana-muted border-t border-solana-border/40 pt-6">
           <div>
-            <dt>Registered</dt>
-            <dd className="mt-0.5 text-neutral-400">
+            <p>Registered</p>
+            <p className="mt-0.5 text-neutral-400">
               {new Date(api.createdAt).toLocaleDateString("ja-JP")}
-            </dd>
+            </p>
           </div>
           <div>
-            <dt>ID</dt>
-            <dd className="mt-0.5 font-mono text-neutral-400">{api.id}</dd>
+            <p>ID</p>
+            <p className="mt-0.5 font-mono text-neutral-400">{api.id}</p>
           </div>
-        </dl>
+        </div>
       </div>
     );
   } catch {
     return (
       <div className="mx-auto max-w-3xl px-6 py-12">
-        <Link href="/" className="text-sm text-neutral-500 hover:text-neutral-300">
+        <Link href="/" className="text-sm text-solana-muted hover:text-neutral-200 transition-colors duration-200">
           ← Back
         </Link>
-        <p className="mt-8 text-neutral-400">API not found or worker unavailable.</p>
+        <p className="mt-8 text-solana-muted">API not found or worker unavailable.</p>
       </div>
     );
   }

@@ -39,17 +39,17 @@ interface CustomTooltipProps {
 }
 
 const CATEGORY_COLORS: Record<string, string> = {
-  DeFi: "#4ade80",
-  NFT: "#a78bfa",
+  DeFi: "#14F195",
+  NFT: "#9945FF",
   Gaming: "#f59e0b",
-  Data: "#38bdf8",
+  Data: "#00D18C",
   AI: "#fb7185",
-  Other: "#94a3b8",
+  Other: "#7C71A0",
 };
 
 function getCategoryColor(category: string | undefined): string {
-  if (!category) return CATEGORY_COLORS["Other"] ?? "#94a3b8";
-  return CATEGORY_COLORS[category] ?? CATEGORY_COLORS["Other"] ?? "#94a3b8";
+  if (!category) return CATEGORY_COLORS["Other"] ?? "#7C71A0";
+  return CATEGORY_COLORS[category] ?? CATEGORY_COLORS["Other"] ?? "#7C71A0";
 }
 
 function CustomTooltip({ active, payload }: CustomTooltipProps) {
@@ -59,18 +59,20 @@ function CustomTooltip({ active, payload }: CustomTooltipProps) {
   if (!point) return null;
 
   return (
-    <div className="rounded-lg border border-neutral-700 bg-neutral-900 px-3 py-2 shadow-lg">
+    <div className="rounded-xl border border-solana-border/50 bg-solana-surface/90 backdrop-blur-sm px-4 py-3 shadow-glow-card">
       <p className="font-semibold text-neutral-100">{point.name}</p>
-      <p className="mt-1 text-xs text-neutral-400">
-        Volume: {point.totalVolume} {point.priceToken}
-      </p>
-      <p className="text-xs text-neutral-400">
-        Payments: {point.paymentCount}
-      </p>
-      {point.category && (
-        <p className="text-xs text-neutral-500">{point.category}</p>
-      )}
-      <p className="text-xs text-neutral-600">{point.network}</p>
+      <div className="mt-2 space-y-0.5">
+        <p className="text-xs text-solana-green">
+          Volume: <span className="font-semibold">{point.totalVolume} {point.priceToken}</span>
+        </p>
+        <p className="text-xs text-solana-muted">
+          Payments: <span className="text-neutral-300">{point.paymentCount}</span>
+        </p>
+        {point.category && (
+          <p className="text-xs text-solana-muted">{point.category}</p>
+        )}
+        <p className="text-xs text-solana-border">{point.network}</p>
+      </div>
     </div>
   );
 }
@@ -96,30 +98,40 @@ export default function EcoMap({ apis, stats }: EcoMapProps) {
 
   if (points.length === 0) {
     return (
-      <div className="flex h-64 items-center justify-center rounded-xl border border-neutral-800 bg-neutral-900/50">
-        <p className="text-neutral-400">No payment history yet for approved APIs.</p>
+      <div className="flex h-64 items-center justify-center rounded-xl border border-solana-border/50 bg-solana-surface/30">
+        <p className="text-solana-muted">No payment history yet for approved APIs.</p>
       </div>
     );
   }
 
   return (
-    <div className="rounded-xl border border-neutral-800 bg-neutral-900/50 p-4">
-      <p className="mb-4 text-xs text-neutral-500">
-        Bubble size and X-axis represent total payment volume (USDC).
-        Y-axis shows payment count.
+    <div className="rounded-xl border border-solana-border/50 bg-solana-surface/30 backdrop-blur-sm p-6">
+      <p className="mb-6 text-xs text-solana-muted">
+        Bubble size and X-axis represent total payment volume (USDC). Y-axis shows payment count.
       </p>
-      <ResponsiveContainer width="100%" height={400}>
-        <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
+      <ResponsiveContainer width="100%" height={500}>
+        <ScatterChart margin={{ top: 20, right: 30, bottom: 30, left: 20 }}>
+          <defs>
+            <filter id="glow-bubble" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="3" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
           <XAxis
             type="number"
             dataKey="x"
             name="Total Volume"
-            tick={{ fill: "#737373", fontSize: 11 }}
+            tick={{ fill: "#7C71A0", fontSize: 11 }}
+            axisLine={{ stroke: "#2D2640" }}
+            tickLine={{ stroke: "#2D2640" }}
             label={{
               value: "Total Volume (USDC)",
               position: "insideBottom",
-              offset: -10,
-              fill: "#525252",
+              offset: -15,
+              fill: "#7C71A0",
               fontSize: 11,
             }}
           />
@@ -127,25 +139,30 @@ export default function EcoMap({ apis, stats }: EcoMapProps) {
             type="number"
             dataKey="y"
             name="Payment Count"
-            tick={{ fill: "#737373", fontSize: 11 }}
+            tick={{ fill: "#7C71A0", fontSize: 11 }}
+            axisLine={{ stroke: "#2D2640" }}
+            tickLine={{ stroke: "#2D2640" }}
             label={{
               value: "Payment Count",
               angle: -90,
               position: "insideLeft",
-              fill: "#525252",
+              fill: "#7C71A0",
               fontSize: 11,
             }}
           />
           <ZAxis type="number" dataKey="z" range={[60, 600]} />
-          <Tooltip content={<CustomTooltip />} cursor={{ strokeDasharray: "3 3", stroke: "#525252" }} />
-          <Scatter data={points} isAnimationActive={false}>
+          <Tooltip
+            content={<CustomTooltip />}
+            cursor={{ strokeDasharray: "3 3", stroke: "#2D2640" }}
+          />
+          <Scatter data={points} isAnimationActive={false} filter="url(#glow-bubble)">
             {points.map((point, index) => (
               <Cell
                 key={`cell-${index}`}
                 fill={getCategoryColor(point.category)}
-                fillOpacity={0.75}
+                fillOpacity={0.8}
                 stroke={getCategoryColor(point.category)}
-                strokeOpacity={0.5}
+                strokeOpacity={0.4}
               />
             ))}
           </Scatter>
@@ -153,14 +170,14 @@ export default function EcoMap({ apis, stats }: EcoMapProps) {
       </ResponsiveContainer>
 
       {/* Legend */}
-      <div className="mt-4 flex flex-wrap gap-3">
+      <div className="mt-6 flex flex-wrap gap-4">
         {Object.entries(CATEGORY_COLORS).map(([category, color]) => (
           <div key={category} className="flex items-center gap-1.5">
             <span
-              className="inline-block h-2.5 w-2.5 rounded-full"
-              style={{ backgroundColor: color }}
+              className="inline-block h-3 w-3 rounded-full"
+              style={{ backgroundColor: color, boxShadow: `0 0 6px ${color}60` }}
             />
-            <span className="text-xs text-neutral-400">{category}</span>
+            <span className="text-xs text-solana-muted">{category}</span>
           </div>
         ))}
       </div>

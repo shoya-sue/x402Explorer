@@ -1,3 +1,88 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    --solana-purple: #9945FF;
+    --solana-green: #14F195;
+    --solana-teal: #00D18C;
+    --solana-dark: #0E0B16;
+    --solana-surface: #1A1425;
+    --solana-border: #2D2640;
+    --solana-muted: #7C71A0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--solana-dark);
+    background-image:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(153, 69, 255, 0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 90% 20%, rgba(20, 241, 149, 0.06) 0%, transparent 60%);
+    background-attachment: fixed;
+  }
+
+  ::selection {
+    background-color: rgba(153, 69, 255, 0.35);
+    color: #fff;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--solana-dark);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--solana-border);
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--solana-muted);
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply rounded-xl border border-solana-border/50 bg-solana-surface/50 backdrop-blur-sm;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-solana-purple to-solana-green bg-clip-text text-transparent;
+  }
+
+  .glow-btn {
+    @apply bg-gradient-to-r from-solana-purple to-solana-green text-white font-semibold rounded-lg
+           px-6 py-2.5 transition-all duration-200 hover:shadow-glow-purple hover:opacity-90
+           active:scale-95;
+  }
+
+  .input-field {
+    @apply w-full rounded-lg border border-solana-border bg-solana-surface/70 px-4 py-2.5
+           text-neutral-100 placeholder:text-solana-muted
+           focus:border-solana-purple focus:ring-1 focus:ring-solana-purple/50 focus:outline-none
+           transition-colors duration-200;
+  }
+}
+
+@layer utilities {
+  .animate-delay-100 { animation-delay: 100ms; }
+  .animate-delay-200 { animation-delay: 200ms; }
+  .animate-delay-300 { animation-delay: 300ms; }
+  .animate-delay-400 { animation-delay: 400ms; }
+  .animate-delay-500 { animation-delay: 500ms; }
+  .animate-delay-600 { animation-delay: 600ms; }
+
+  .text-gradient {
+    background: linear-gradient(135deg, #9945FF 0%, #14F195 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}

@@ -5,7 +5,7 @@ import type { Network } from "@x402/shared";
 
 const NETWORKS: { value: Network; label: string }[] = [
   { value: "devnet", label: "Devnet" },
-  { value: "mainnet-beta", label: "Mainnet Beta" },
+  { value: "mainnet-beta", label: "Mainnet" },
 ];
 
 interface NetworkToggleProps {
@@ -27,7 +27,7 @@ export default function NetworkToggle({ defaultNetwork = "devnet" }: NetworkTogg
     <div
       role="group"
       aria-label="Select network"
-      className="flex overflow-hidden rounded-lg border border-neutral-700"
+      className="flex overflow-hidden rounded-lg border border-solana-border"
     >
       {NETWORKS.map(({ value, label }) => {
         const isActive = currentNetwork === value;
@@ -38,10 +38,10 @@ export default function NetworkToggle({ defaultNetwork = "devnet" }: NetworkTogg
             onClick={() => handleSelect(value)}
             aria-pressed={isActive}
             className={[
-              "px-4 py-1.5 text-sm font-medium transition-colors",
+              "px-4 py-1.5 text-sm font-medium transition-all duration-200",
               isActive
-                ? "bg-neutral-100 text-neutral-900"
-                : "bg-transparent text-neutral-400 hover:bg-neutral-800 hover:text-neutral-200",
+                ? "bg-gradient-brand text-white shadow-glow-purple/20"
+                : "bg-transparent text-solana-muted hover:bg-solana-surface hover:text-neutral-200",
             ].join(" ")}
           >
             {label}
