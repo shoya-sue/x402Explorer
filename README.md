@@ -235,13 +235,13 @@ pnpm db:migrate:production
 
 | Secret | Value |
 |--------|-------|
-| `CLOUDFLARE_API_TOKEN` | Cloudflare Dashboard で作成（権限: Workers Scripts:Edit, D1:Edit, Pages:Edit, Account:Read） |
-| `CLOUDFLARE_ACCOUNT_ID` | Kojin アカウント ID（`wrangler whoami` で確認） |
+| `CLOUDFLARE_API_TOKEN` | Cloudflare Dashboard で作成（権限: Workers Scripts:Edit, D1:Edit, Pages:Edit） |
+| `CLOUDFLARE_ACCOUNT_ID` | Cloudflare アカウント ID |
 | `NEXT_PUBLIC_WORKER_URL` | `https://x402explorer-api.fracturelab.dev` |
 
 **API Token 作成手順:**
 1. Cloudflare Dashboard → My Profile → API Tokens → "Create Custom Token"
-2. 権限: Account / Workers Scripts / Edit, Account / D1 / Edit, Account / Cloudflare Pages / Edit, Account / Account Settings / Read
+2. 権限: Account / Workers Scripts / Edit, Account / D1 / Edit, Account / Cloudflare Pages / Edit
 3. Account Resources: Kojin アカウントのみ指定
 
 ### Troubleshooting
