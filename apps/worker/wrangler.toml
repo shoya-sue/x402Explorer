@@ -19,5 +19,5 @@ ALLOWED_ORIGIN = "https://x402explorer.fracturelab.dev"
 #   HELIUS_WEBHOOK_SECRET
 
 [[routes]]
-pattern = "api.x402explorer.fracturelab.dev"
+pattern = "x402explorer-api.fracturelab.dev"
 custom_domain = true
