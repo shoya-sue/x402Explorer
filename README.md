@@ -163,7 +163,100 @@ kill %1 %2
 | Language | TypeScript 5.5+ |
 | Frontend | Next.js 14 (App Router) + Tailwind v3 |
 | Backend | Cloudflare Workers + Hono 4 |
-| Database | Cloudflare D1 (local SQLite) |
+| Database | Cloudflare D1 (local SQLite / prod) |
 | Validation | Zod 3 |
 | Package build | tsup (ESM + CJS + dts) |
 | Solana RPC | Helius Enhanced API |
+
+---
+
+## Production Deployment
+
+### Architecture
+
+```
+Browser → Cloudflare Pages (x402explorer.fracturelab.dev)
+           ↓ fetch
+         Cloudflare Workers (x402explorer-api.fracturelab.dev)
+           ↓ query
+         Cloudflare D1 (x402_explorer_prod)
+           ↓ RPC
+         Helius Enhanced API (devnet)
+```
+
+### URLs
+
+| Service | URL |
+|---------|-----|
+| Web (Pages) | https://x402explorer.fracturelab.dev |
+| API (Worker) | https://x402explorer-api.fracturelab.dev |
+| Pages preview | https://x402-explorer-web.pages.dev |
+
+### Manual Deploy
+
+#### Prerequisites
+
+- `wrangler login` で Kojin アカウントに認証済み
+- Worker secrets 投入済み（初回のみ）:
+
+```bash
+cd apps/worker
+npx wrangler secret put HELIUS_API_KEY
+npx wrangler secret put HELIUS_WEBHOOK_SECRET
+```
+
+#### Worker
+
+```bash
+pnpm deploy:worker
+# or: cd apps/worker && npx wrangler deploy
+```
+
+#### Pages
+
+```bash
+# NEXT_PUBLIC_WORKER_URL はビルド時に静的埋め込みされるため環境変数として渡す
+cd apps/web
+NEXT_PUBLIC_WORKER_URL=https://x402explorer-api.fracturelab.dev npx @cloudflare/next-on-pages
+npx wrangler pages deploy .vercel/output/static --project-name=x402-explorer-web
+```
+
+#### D1 Migration（スキーマ変更時のみ）
+
+```bash
+pnpm db:migrate:production
+```
+
+### CI/CD (GitHub Actions)
+
+`main` ブランチへの push で Worker → Pages の順に自動デプロイ（`.github/workflows/deploy.yml`）。
+
+以下の GitHub Secrets を Settings → Secrets and variables → Actions で設定：
+
+| Secret | Value |
+|--------|-------|
+| `CLOUDFLARE_API_TOKEN` | Cloudflare Dashboard で作成（権限: Workers Scripts:Edit, D1:Edit, Pages:Edit, Account:Read） |
+| `CLOUDFLARE_ACCOUNT_ID` | `174035f0b17da0144acfa9e8b371d46f` |
+| `NEXT_PUBLIC_WORKER_URL` | `https://x402explorer-api.fracturelab.dev` |
+
+**API Token 作成手順:**
+1. Cloudflare Dashboard → My Profile → API Tokens → "Create Custom Token"
+2. 権限: Account / Workers Scripts / Edit, Account / D1 / Edit, Account / Cloudflare Pages / Edit, Account / Account Settings / Read
+3. Account Resources: Kojin アカウントのみ指定
+
+### Troubleshooting
+
+| 問題 | 原因 | 対処 |
+|------|------|------|
+| CORS エラー (ブラウザ) | Worker の `ALLOWED_ORIGIN` 不一致 | `apps/worker/wrangler.toml` の `[vars] ALLOWED_ORIGIN` を確認 |
+| 401 on `/payments/webhook` | `HELIUS_WEBHOOK_SECRET` 未設定 or 不一致 | `cd apps/worker && npx wrangler secret put HELIUS_WEBHOOK_SECRET` で再投入 |
+| Pages ビルド失敗 | `NEXT_PUBLIC_WORKER_URL` 未設定 | ビルド時に `NEXT_PUBLIC_WORKER_URL` を env として渡す |
+| D1 テーブル不在 | マイグレーション未適用 | `pnpm db:migrate:production` を実行 |
+| `pnpm deploy:web` が動かない | pnpm の `deploy` コマンドと競合 | `cd apps/web && npx wrangler pages deploy ...` で直接実行 |
+
+### Security Notes
+
+- **Webhook 認証**: `Authorization: Bearer <secret>` ヘッダ + timing-safe XOR 比較
+- **CORS**: `ALLOWED_ORIGIN` env 変数で制限（本番: `https://x402explorer.fracturelab.dev`）
+- **SSRF 対策**: `verify402()` は HTTPS のみ + プライベート IP denylist + 10秒タイムアウト + 64KB body 上限
+- **Secrets**: `wrangler secret put` で投入（`wrangler.toml` には記載しない）
