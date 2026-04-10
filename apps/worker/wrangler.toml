@@ -2,12 +2,12 @@ name = "x402-explorer-worker"
 main = "src/index.ts"
 compatibility_date = "2024-09-23"
 compatibility_flags = ["nodejs_compat"]
-# account_id = "<KOJIN_ACCOUNT_ID>"  # ← wrangler whoami で取得後に追記
+account_id = "174035f0b17da0144acfa9e8b371d46f"  # Kojin
 
 [[d1_databases]]
 binding = "DB"
 database_name = "x402_explorer_prod"
-database_id = "local-dev-placeholder"  # ← wrangler d1 create 後に実際の ID に差し替え
+database_id = "c6d1ee3c-75a3-4354-b745-30609fbd816e"
 migrations_dir = "migrations"
 
 [vars]
